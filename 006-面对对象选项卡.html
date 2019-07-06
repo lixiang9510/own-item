@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta charset="UTF-8">
+	<title>006</title>
+	<style>
+		html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
+		#my-own-tab{
+			position: relative;
+		}
+		#my-own-tab .tab-list{
+			overflow: hidden;
+			margin-bottom: 10px;
+		}
+		#my-own-tab .tab-list li{
+			float: left;
+			width: 100px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			cursor: pointer;
+		}
+		#my-own-tab .tab-container li{
+			width: 400px;
+			height: 600px;
+			line-height: 600px;
+			border: 1px solid #000;
+			display: none;
+			font-size: 80px;
+			text-align: center;
+		}
+		#my-own-tab .active{
+			color: #ff6700;
+			border-bottom: 2px solid #ff6700;
+		}
+	</style>
+</head>
+<body>
+	<div id="my-own-tab">
+		<ul class="tab-list">
+		<li class="active">热门</li>
+		<li>电视</li>
+		<li>电脑</li>
+		<li>家居</li>
+		</ul>
+		<ul id="tab-container" class="tab-container">
+			<li style="display: block;">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>	
+	</div>
+</body>
+<script>
+	(function(){
+		function Tab(listSelector,containerSelector){
+			this.aBtn = document.querySelectorAll(listSelector);
+			this.aContent = document.querySelectorAll(containerSelector);
+			this.bindEvent();
+		}
+		Tab.prototype.bindEvent = function(){
+			var _this = this;
+			for(var i=0;i<this.aBtn.length;i++){
+				this.aBtn[i].index = i;
+				this.aBtn[i].onclick=function(){
+					console.log(this.index);
+					_this.fnClick(this);
+				}
+			}
+		}
+		Tab.prototype.fnClick = function(oBtn){
+			for(var j=0;j<this.aBtn.length;j++){
+				this.aBtn[j].className = '';
+				this.aContent[j].style.display = 'none';
+			}
+			oBtn.className = "active";
+			this.aContent[oBtn.index].style.display = "block";
+		}
+		new Tab('#my-own-tab .tab-list li','#my-own-tab .tab-container li');
+	})()
+</script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta charset="UTF-8">
+	<title>003</title>
+
+	<style>
+		html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
+		body{
+			background: pink;
+			height: 2000px;
+		}
+		.fixed-left-nav{
+			position: fixed;
+			top: 150px;
+			left: 100px;
+			opacity: 0;
+			width: 50px;
+			height: 350px;
+			border-radius: 15px;
+		}
+		.fixed-left-nav li{
+			position: relative;
+			left:-35px;
+			width: 120px;
+			height: 55px;
+			margin-bottom: 10px;
+			border-radius: 10px;
+			text-align: center;
+			line-height: 50px;
+			font-size: 25px;
+			color: rgb(218,218,218);
+		}
+		.fixed-left-nav li:nth-last-child(2){
+			left: 0px;
+			top: 0px;
+			width: 50px;
+			height: 10px;
+			transform: rotateZ(90deg);
+		}
+		.fixed-left-nav li:last-child{
+			left: 0px;
+			top: -10px;
+			width: 50px;
+			height: 50px;
+			font-size: 13px;
+			transform: rotateZ(45deg);
+		}
+		.fixed-left-nav li:last-child a{
+			position: relative;
+			display: block;
+			width: 50px;
+			height: 50px;
+			box-sizing: border-box;
+			text-decoration: none;
+			color: #333;
+			font-weight: bold;
+			transform: rotateZ(-45deg);
+		}
+		.fixed-left-nav li:last-child a span{
+			position: absolute;
+			top: 17px;
+			left: 8px;
+			width: 34px;
+			height: 34px;
+			line-height: 17px;
+
+		}
+		.fixed-left-nav li:last-child a i{
+			position:absolute;
+			top: -14px;
+			left: 50%;
+			display: block; 
+			width: 16px;
+			height: 16px;
+			margin-left: -8px;
+		}
+	</style>
+	<link rel="stylesheet" href="css/iconfont.css">
+</head>
+<body>
+	<div class="fixed-left-nav">
+		<ul>
+			<li>外语培训</li>
+			<li>电脑培训</li>
+			<li>职业培训</li>
+			<li>学历研修</li>
+			<li>彩绘培训</li>
+			<li>资格认证</li>
+			<li></li>
+			<li><a href=""><span>返回顶部</span><i class="iconfont">&#xe666;</i></a></li>
+		</ul>
+	</div>
+</body>
+<script>
+	(function(){
+		var FixedLeftNav = document.querySelector('.fixed-left-nav');
+		var aLi = FixedLeftNav.querySelectorAll('li');
+		console.log(aLi);
+		var arr = ['rgb(255,162,0)','rgb(110,126,255)','rgb(255,120,0)','rgb(0,168,240)'];
+		var i = 0;
+		setInterval(function(){
+			FixedLeftNav.style.background = arr[i];
+			for(var j=0;j<aLi.length;j++){
+				aLi[j].style.background = arr[i];
+			}
+			i = i+1;
+			if(i == arr.length+1){
+				i = 0;
+			}
+		},1000);
+		window.onscroll=function(){
+			if(document.documentElement.scrollTop >= 500){
+				FixedLeftNav.style.transition = 'opacity 0.5s linear';
+				FixedLeftNav.style.opacity = 1;
+			}else{
+				FixedLeftNav.style.transition = 'opacity 0.5s linear';
+				FixedLeftNav.style.opacity = 0;
+			}
+		}
+	})()
+</script>
+</html>

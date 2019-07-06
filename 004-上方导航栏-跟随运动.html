@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta charset="UTF-8">
+	<title>004</title>
+	<style>
+		html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
+		.top-move-nav{
+			position: relative;
+			top: 100px;
+			left: 0px;
+			width: 100%;
+			height: 40px;
+			background: rgb(2,48,142);
+		}
+	
+		.top-move-nav ul{
+			position: absolute;
+			top: 0px;
+			left: 200px;
+		}
+		.top-move-nav .add-masking{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			height: 40px;
+			width: 100px;
+			background: #ff6700;
+			transition: left 0.4s ease-in-out;
+		}
+		
+		.top-move-nav li{
+			position: relative;
+			float: left;
+			padding: 0px 20px;
+			line-height: 40px;
+			color: #ccc;
+			font-weight: bolder;
+		}
+		.top-move-nav li:nth-child(1){
+			background: #ff6700;
+		}
+	</style>
+</head>
+<body>
+	<div class="top-move-nav">
+		
+		<ul>
+			<div class="add-masking"></div>
+			<li>首页</li>
+			<li>国内</li>
+			<li>国际</li>
+			<li>军事</li>
+			<li>财经</li>
+			<li>互联网</li>
+			<li>游戏</li>
+			<li>汽车</li>
+			<li>汽车</li>
+		</ul>
+	</div>
+</body>
+<script>
+	(function(){
+		var TopMoveNav = document.querySelector('.top-move-nav');
+		var oAddMasking = TopMoveNav.querySelector('.add-masking');
+		console.log(oAddMasking);
+		var oUl = TopMoveNav.querySelector('ul');
+		var aLi = oUl.querySelectorAll('li');
+		oAddMasking.style.width = aLi[0].offsetWidth+"px";
+		for(var i = 0;i<aLi.length;i++){
+			aLi[i].onmouseover = function(){
+				oAddMasking.style.width = this.offsetWidth+"px";
+				oAddMasking.style.left = this.offsetLeft+"px";
+			}
+			aLi[i].onmouseleave = function(){
+				oAddMasking.style.width = aLi[0].offsetWidth+"px";
+				oAddMasking.style.left = 0+"px";
+			}
+		}
+	})()
+</script>
+</html>
