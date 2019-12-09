@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta charset="UTF-8">
+	<title>000</title>
+	<style>
+		html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
+		#coordinates-box{
+			position: relative;
+			width: 100px;
+			height: 100px;
+			margin: 200px auto;
+			/*border:1px solid black;*/
+		}
+		#coordinates-box .circle{
+			position: absolute;
+			top: 0px;
+			left: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -10px;
+			margin-left: -10px;
+			background: red;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div id="coordinates-box">
+		<div class="circle"></div>
+	</div>
+</body>
+<script>
+	function coordinatesTurn(elems){
+		var oCircle = document.querySelector(elems);
+		var timer = 0;
+		var currentX = 100;
+		var currentY = 0;
+		var timeNumber = 1;
+		var timeNumber2 = 1;
+		var r = 20;
+		timer = setInterval(function(){
+			if(timeNumber){
+				currentX -=2;
+			}else{
+				currentX +=2;
+			}
+			oCircle.style.left = currentX + 'px';
+			if(currentX <= -r){
+				timeNumber = 0;	
+				timeNumber2 = 0
+			}
+			if(currentX >= r){
+				timeNumber = 1;
+				timeNumber2 = 1;
+			}
+			if(timeNumber2){
+				currentY = Math.pow((r*r-(Math.pow(currentX,2))),(1/2))
+			}else{
+				currentY = -Math.pow((r*r-(Math.pow(currentX,2))),(1/2))
+			}
+			oCircle.style.top = currentY + 'px';
+		},5)
+	}
+	new coordinatesTurn('#coordinates-box .circle')
+</script>
+</html>

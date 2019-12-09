@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>计算器</title>
+	<link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+	<div id="app">
+		<p>{{message}}</p>
+		<Formulabox></Formulabox>
+		<Resultbox></Resultbox>
+		<Numberbox></Numberbox>
+	</div>
+	<template id="Formulabox">
+		<div>
+			<span>{{result}}</span>
+			<input type="text" v-model="formula">
+		</div>
+	</template>
+	<template id="Resultbox">
+		<div>
+			<span>结果显示框：</span>
+			<input type="text" v-model="result">
+		</div>
+	</template>
+	<template id="Numberbox">
+		<div>
+			<ul>
+				<li>
+					<button>sin()</button>
+				</li>
+			</ul>
+		</div>
+	</template>
+</body>
+<script src="./js/vue.js"></script>
+<script>
+	//console.log(Vue)
+	const Formulabox = Vue.extend({
+		template:'#Formulabox',
+		data(){
+			return {
+				formula:'我是公式'
+			}
+		}
+	})
+	const Resultbox = Vue.extend({
+		template:'#Resultbox',
+		data(){
+			return {
+				result:'我是结果'
+			}
+		}
+	})
+	const Numberbox = Vue.extend({
+		template:'#Numberbox',
+		data(){
+			return {
+				result:'我是结果'
+			}
+		}
+	})
+	console.log(Math.sin(3.1415926/6))
+	let vm = new Vue({
+		el:"#app",
+		data:{
+			message:"hello vue"
+		},
+		components:{
+			Formulabox,
+			Resultbox,
+			Numberbox
+		}
+	});
+</script>
+</html>

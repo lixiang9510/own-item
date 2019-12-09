@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>000</title>
+	<style>
+		html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
+		#change-color-word{
+			position: absolute;
+			top: 15%;
+			left: 20%;
+			width: 60%;
+			height: 60%;
+			background: red;
+		}
+		#change-color-word .top-word{
+			position: absolute;
+			top:-12%;
+			left:0px ;
+			width: 100%;
+			height:10%;
+			background: yellow;
+			text-align: center;
+			font-size: 25px;
+			font-weight: bolder;
+		}
+		#change-color-word .left-word{
+			position: absolute;
+			top:0px;
+			left: -24%;
+			width:20%; 
+			height:100%;
+			background:purple;
+			font-size: 25px;
+			font-weight: bolder;
+		}
+		#change-color-word .right-word{
+			position: absolute;
+			top:0px;
+			right: -24%;
+			width:20%; 
+			height:100%;
+			background:purple ;
+			font-size: 25px;
+			font-weight: bolder;
+		}
+		#change-color-word .bottom-word{
+			position: absolute;
+			bottom:-12%;
+			left:0px ;
+			width: 100%;
+			height:10%;
+			background: yellow;
+			font-size: 25px;
+			font-weight: bolder;
+		}
+		#center-img{
+			position:absolute; 
+			top:0px;
+			left:0px;
+			background:pink;
+		}
+		.leftless{
+			position: absolute;
+			top: 50%;
+			left: 0px;
+			width: 30px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			font-size: 20px;
+			margin-top: -30px;
+			opacity: 0.5;
+			background-color: #ccc;
+			z-index: 99;
+			cursor:pointer;
+			user-select: none;
+		}
+		.rightmore{
+			position: absolute;
+			top: 50%;
+			right: 0px;
+			width: 30px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			font-size: 20px;
+			margin-top: -30px;
+			opacity: 0.5;
+			background-color: #ccc;
+			z-index: 99;
+			cursor:pointer;
+			user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="change-color-word">
+		<div class="top-word1"></div>
+		<div class="left-word1"></div>
+		<div class="right-word1"></div>
+		<div class="bottom-word1"></div>
+		<div id="center-img"></div>
+	</div>
+</body>
+<script>
+	// var oBox = document.getElementById('change-color-word');
+	// var oTopWord = oBox.querySelector('.top-word');
+	// var oLeftWord = oBox.querySelector('.left-word');
+	// var oRightWord = oBox.querySelector('.rifht-word');
+	// var oBottomWord = oBox.querySelector('.bottom-word');
+	// var str = '哈哈哈哈哈啊哈哈';
+	// console.log(str.length)
+	
+	// window.onload=function(){
+	// 	oTopWord.style.lineHeight = oTopWord.offsetHeight + 'px';
+	// }
+	//动画
+	function animate(obj,options,decelerate,fnEnd){
+		var ispeed=10;
+		clearInterval(obj.timer);
+		obj.timer=setInterval(function(){
+			var isStopAll=true;
+			for(var attr in options){
+				var isStopOne=true;
+				if(!decelerate){
+					ispeed=7;
+				}
+				var current=parseFloat(getComputedStyle(obj,false)[attr]);
+				if(attr=='opacity'){
+					current=Math.round(current*100);
+				}else{
+					current=Math.round(current);
+				}
+				if(decelerate){
+					if(Math.abs(ispeed)>1){
+						ispeed=(options[attr]-current)/10;
+					}else{
+						ispeed=(options[attr]-current)*Math.abs(1/(options[attr]-current));
+					}
+					if(!ispeed){
+						isStopOne=false;			
+					}else{
+						isStopAll=false;
+					}
+				}else{
+					ispeed=(options[attr]-current)*Math.abs(1/(options[attr]-current))*Math.abs(ispeed);
+					if(Math.abs(current-options[attr])<=Math.abs(ispeed)){
+						if(attr=='opacity'){
+							obj.style[attr]=options[attr]/100;
+						}else{
+							obj.style[attr]=options[attr]+'px';
+						}
+						isStopOne=false;
+					}else{
+						isStopAll=false;
+					}
+				}
+				if(isStopAll){
+					clearInterval(obj.timer);
+					if(!isStopOne){
+						if(fnEnd){
+							fnEnd();
+						}	
+					}
+				}
+				if(attr=='opacity'){
+					obj.style[attr]=(current+ispeed)/100;
+				}else{
+					obj.style[attr]=current+ispeed+'px';
+				}
+			}
+			
+		},30)
+	}
+	//
+	function ChangeColorWord(opation){
+		this.oBox = document.getElementById(opation.id);
+		this.oTopWord1 = this.oBox.querySelector('.top-word1');
+		this.oBottomWord1 = this.oBox.querySelector('.bottom-word1');
+		this.oLeftWord1 = this.oBox.querySelector('.left-word1');
+		this.oRightWord1 = this.oBox.querySelector('.right-word1');
+		this.words = opation.words;
+		this.colors = opation.colors;
+		this.oUl = null;
+		this.oLi = null;
+		this.aTopLi = null;
+		// console.log(this.words.top[0],this.images.length)
+		this.init();
+	}
+	//初始化开始页面
+	ChangeColorWord.prototype.init = function(){
+		if(this.words.top){
+			this.oTopWord1.className = "top-word1 top-word"
+			this.oUl = document.createElement('ul');
+			this.oTopWord1.appendChild(this.oUl);
+			this.oUl.style.width = this.oTopWord1.offsetWidth+'px';
+			this.oUl.style.height = this.oTopWord1.offsetHeight+'px';
+			for(var i=0;i<this.words.top.length;i++){
+				this.oLi = document.createElement('ll');
+				this.oUl.appendChild(this.oLi) ;
+				this.oLi.style.float = 'left';
+				this.oLi.style.width = this.oTopWord1.offsetWidth/this.words.top.length+'px';
+				this.oLi.style.height = this.oTopWord1.offsetHeight+'px';
+				this.oLi.style.lineHeight = this.oLi.offsetHeight + 'px';
+				this.oLi.style.textAlign = 'center';
+				this.oLi.innerHTML = this.words.top[i];
+				// console.log(this.words.top[i]);
+			}
+		}
+		if(this.words.bottom){
+			this.oBottomWord1.className = "bottom-word1 bottom-word";
+			this.oUl = document.createElement('ul');
+			this.oBottomWord1.appendChild(this.oUl);
+			this.oUl.style.width = this.oBottomWord1.offsetWidth+'px';
+			this.oUl.style.height = this.oBottomWord1.offsetHeight+'px';
+			for(var i=0;i<this.words.bottom.length;i++){
+				this.oLi = document.createElement('ll');
+				this.oUl.appendChild(this.oLi) ;
+				this.oLi.style.float = 'left';
+				this.oLi.style.width = this.oBottomWord1.offsetWidth/this.words.bottom.length+'px';
+				this.oLi.style.height = this.oBottomWord1.offsetHeight+'px';
+				this.oLi.style.lineHeight = this.oBottomWord1.offsetHeight + 'px';
+				this.oLi.style.textAlign = 'center';
+				this.oLi.innerHTML = this.words.bottom[i];
+			}
+		}
+		if(this.words.left){
+			this.oLeftWord1.className = "left-word1 left-word";
+			this.oUl = document.createElement('ul');
+			this.oLeftWord1.appendChild(this.oUl);
+			this.oUl.style.width = this.oLeftWord1.offsetWidth+'px';
+			this.oUl.style.height = this.oLeftWord1.offsetHeight+'px';
+			for(var i=0;i<this.words.left.length;i++){
+				this.oLi = document.createElement('ll');
+				this.oUl.appendChild(this.oLi) ;
+				this.oLi.style.float = 'left';
+				this.oLi.style.width = this.oLeftWord1.offsetWidth+'px';
+				this.oLi.style.height = this.oLeftWord1.offsetHeight/this.words.left.length+'px';
+				this.oLi.style.lineHeight = this.oLi.offsetHeight + 'px';
+				this.oLi.style.textAlign = 'center';
+				this.oLi.innerHTML = this.words.left[i];
+			}
+		}
+		if(this.words.right){
+			this.oRightWord1.className = "right-word1 right-word";
+			this.oUl = document.createElement('ul');
+			this.oRightWord1.appendChild(this.oUl);
+			this.oUl.style.width = this.oRightWord1.offsetWidth+'px';
+			this.oUl.style.height = this.oRightWord1.offsetHeight+'px';
+			for(var i=0;i<this.words.right.length;i++){
+				this.oLi = document.createElement('ll');
+				this.oUl.appendChild(this.oLi) ;
+				this.oLi.style.float = 'right';
+				this.oLi.style.width = this.oRightWord1.offsetWidth+'px';
+				this.oLi.style.height = this.oRightWord1.offsetHeight/this.words.right.length+'px';
+				this.oLi.style.lineHeight = this.oLi.offsetHeight + 'px';
+				this.oLi.style.textAlign = 'center';
+				this.oLi.innerHTML = this.words.right[i];
+			}
+		}
+		this.handleColor();
+	}
+	//颜色效果
+	ChangeColorWord.prototype.handleColor = function(){
+		var _this = this;
+		//上面
+		this.aTopUl = this.oBox.querySelector('.top-word1 ul');
+		this.aTopLi = this.aTopUl.children;
+		fickerColor(_this,this.aTopLi);
+		// mobilityColor(_this,this.aTopLi);
+
+		//下面
+		this.aBottomUl = this.oBox.querySelector('.bottom-word1 ul');
+		this.aBottomLi = this.aBottomUl.children;
+		fickerColor(_this,this.aBottomLi);
+		//左边
+		this.aLeftUl = this.oBox.querySelector('.left-word1 ul');
+		this.aLeftLi = this.aLeftUl.children;
+		fickerColor(_this,this.aLeftLi);
+		//右边
+		this.aRightUl = this.oBox.querySelector('.right-word1 ul');
+		this.aRightLi = this.aRightUl.children;
+		fickerColor(_this,this.aRightLi);
+	
+	}
+	//灯光效果-闪烁
+	function fickerColor(_this,elems){
+		var currentColor = 0
+		_this.timer1 = setInterval(function(){
+			for(var k=0;k<elems.length;k++){
+				// console.log(k);
+				if(currentColor%2 == 0){
+					if(k%2 == 0){
+						elems[k].style.backgroundColor = _this.colors[0]
+					}else{
+						elems[k].style.backgroundColor = _this.colors[2]
+					}
+				}else if(currentColor%3 == 0){
+					if(k%2 == 0){
+						elems[k].style.backgroundColor = _this.colors[1]
+					}else{
+						elems[k].style.backgroundColor = _this.colors[3]
+					}
+				}else if(currentColor%5 == 0){
+					if(k%2 == 0){
+						elems[k].style.backgroundColor = _this.colors[1]
+					}else{
+						elems[k].style.backgroundColor = _this.colors[3]
+					}
+				}else{
+					if(k%2 == 0){
+						elems[k].style.backgroundColor = _this.colors[4]
+					}else{
+						elems[k].style.backgroundColor = _this.colors[5]
+					}
+				}
+			}
+			currentColor += 1;
+		},500)
+	}
+	//灯光效果-流动
+	function mobilityColor(_this,oBox,elems){
+		var oMaskingDiv = document.createElement('div');
+
+	}
+	//轮播图
+	function Carousel(opation){
+		this.oBox=document.getElementById(opation.id);
+		// console.log(this.oBox);
+		this.aImg=opation.aImg;
+		this.width=opation.width;
+		this.height=opation.height;
+		// console.log(this.width);
+		this.oUl=null;
+		this.oLi=null;
+		this.oImg=null;
+		this.now=0;
+		this.timer=0;
+		this.aLi=null;
+		this.aLi2=null;
+		this.init();
+		this.leftRight();
+		this.bottomSpot();
+		this.changeImg();
+	}
+	// for add three img 
+	Carousel.prototype.init=function(){
+		this.oUl=document.createElement('ul');
+		for(i=0;i<this.aImg.length;i++){
+			this.aImg[i].index=i;
+			// console.log(i);
+			this.oLi=document.createElement('li');
+			this.oImg=document.createElement('img');
+			this.oImg.src=this.aImg[i];
+			this.oLi.appendChild(this.oImg);
+			this.oUl.appendChild(this.oLi);
+			this.oLi.style.position="absolute";
+			this.oLi.style.top="0px";
+			this.oLi.style.left="0px";
+			this.oLi.style.width = '100%';
+			this.oLi.style.height = '100%';
+			this.oImg.style.width='100%';
+			this.oImg.style.height='100%';
+			this.oLi.style.zIndex=1;
+			this.oLi.style.opacity=0.5;
+			if(i==0){
+				this.oLi.style.zIndex=9;
+				this.oLi.style.opacity=1;
+			}
+		}
+		this.oBox.appendChild(this.oUl);
+		this.oBox.style.width=this.width;
+		this.oBox.style.height=this.height;
+		this.oBox.style.marginLeft=-this.width*0.5+'px';
+		// console.log(this.oUl);
+		this.oUl.style.width = '100%';
+		this.oUl.style.height = '100%';
+		this.oUl.style.listStyle='none';
+		this.aLi=this.oUl.children;
+	}
+	//for add left and right button;
+	Carousel.prototype.leftRight=function(){
+		var _this=this;
+		this.toLeft=document.createElement('div');
+		this.toLeft.className="leftless";
+		this.toLeft.innerHTML='&lt;'
+		this.toRight=document.createElement('div');
+		this.toRight.className='rightmore';
+		this.toRight.innerHTML='&gt;'
+		this.oBox.appendChild(this.toLeft);
+		this.oBox.appendChild(this.toRight);
+		this.toRight.onclick=function(){
+			_this.now++;
+			if(_this.now==_this.aLi.length){
+				_this.now=0;
+			}
+			_this.changeImg();
+		}
+		this.toLeft.onclick=function(){
+			_this.now--;
+			if(_this.now<0){
+				_this.now=_this.aLi.length-1;
+			}
+			_this.changeImg();
+		}
+	}
+	//for add bottom button
+	Carousel.prototype.bottomSpot=function(){
+		var _this=this;
+		this.oUl2=document.createElement('ul');
+		for(i=0;i<this.aImg.length;i++){
+			this.aImg[i].index=i;
+			this.oLi2=document.createElement('li')
+			this.oUl2.appendChild(this.oLi2);
+			this.oLi2.style.width='20px';
+			this.oLi2.style.height='20px';
+			this.oLi2.style.float='left';
+			this.oLi2.style.backgroundColor='#333';
+			this.oLi2.style.marginRight='10px';
+			this.oLi2.style.borderRadius='50%';
+			this.oLi2.style.opacity=0.5;
+			if(i==0){
+				this.oLi2.style.opacity=1;
+			}
+		}
+		this.oBox.appendChild(this.oUl2);
+		this.oUl2.style.listStyle='none';
+		this.oUl2.style.position='absolute';
+		this.oUl2.style.bottom='20px';
+		this.oUl2.style.left='50%';
+		this.oUl2.style.marginLeft=-this.oUl2.offsetWidth*0.5+'px';
+		this.oUl2.style.zIndex=99;
+		this.aLi2=this.oUl2.children;
+		for(i=0;i<this.aLi2.length;i++){
+			this.aLi2[i].index=i;
+			this.aLi2[i].onclick=function(){
+				_this.now=this.index;
+				_this.changeImg();
+			}
+		}
+		this.timer=setInterval(this.toRight.onclick,1000);
+
+		this.oBox.onmouseover=function(){
+			clearInterval(_this.timer);
+		}
+		this.oBox.onmouseout=function(){
+			_this.timer=setInterval(_this.toRight.onclick,1000);
+		}
+	}
+	//add a common function;
+	Carousel.prototype.changeImg=function(){
+		for(i=0;i<this.aLi.length;i++){
+			for(i=0;i<this.aLi.length;i++){
+				this.aLi[i].style.opacity=0.5;
+				this.aLi[i].style.zIndex=1;
+				this.aLi2[i].style.opacity=0.5;					
+			}
+			this.aLi[this.now].style.zIndex=9;
+			animate(this.aLi[this.now],{'opacity':100},0)
+			this.aLi2[this.now].style.opacity=1;
+		}
+	}
+	new Carousel({
+		id:'center-img',
+		aImg:["http://a1.qpic.cn/psb?/V10fh5zY0SvWbk/QWOwLcXrjRUHO*1uMmymyjc7Y1KJW0cGSAEJwASOZp0!/b/dLgAAAAAAAAA&bo=WQJnAwAAAAADBx0!&rf=viewer_4","http://a4.qpic.cn/psb?/V10fh5zY0SvWbk/a7TzvJnI8e1vBJ4mPYFin7L4S21O16fd8C8lY9QHMVA!/b/dL8AAAAAAAAA&bo=5gK2AwAAAAADB3M!&rf=viewer_4","http://a3.qpic.cn/psb?/V10fh5zY0SvWbk/qMrSkeFM09f0Ta8vV9JRZaJ*IZ5ZoRwY9vvLFJUxavE!/b/dLYAAAAAAAAA&bo=ngIFBAAAAAADB78!&rf=viewer_4","http://m.qpic.cn/psb?/V10fh5zY0SvWbk/wIN76VeM8oEE84QRziPUdJGHhWNuhtEA0zjb*hPWQ00!/b/dFMBAAAAAAAA&bo=zAIGBAAAAAADZ44!&rf=viewer_4","http://m.qpic.cn/psb?/V10fh5zY0SvWbk/pq4qw72cJ22pKQi5MPxBxzO1aHiymTgbqjK7q.sSvnw!/b/dLgAAAAAAAAA&bo=BwP6AwAAAAADN.8!&rf=viewer_4","http://a3.qpic.cn/psb?/V10fh5zY0SvWbk/bJM*aB2N4MhUYcicbf0UI.v3QRptyJdSh1eTJpDIp80!/b/dLYAAAAAAAAA&bo=2wFiAwAAAAADB5k!&rf=viewer_4","http://m.qpic.cn/psb?/V10fh5zY0SvWbk/n6GHL3a0Z2LdBWlUdkMSAQRYPDrOvXFJe4dBYR0q3TU!/b/dL8AAAAAAAAA&bo=HwJfAwAAAAADRyM!&rf=viewer_4"],
+		width:'100%',
+		height:'100%'
+	});
+	new ChangeColorWord({
+		id:'change-color-word',
+		words:{
+			top:'一群傻吊',
+			bottom:'吹吧，继续吹吧',
+			left:'彩笔彩笔彩笔',
+			right:'傻吊傻吊傻吊'
+		},
+		colors:['#39c','green','#c36','purple','yellow','orange','rgb(252,64,27)','rgb(254,62,135)']
+	})
+	window.onresize=function(){
+		location.replace(document.referrer);
+	}
+</script>
+</html>
